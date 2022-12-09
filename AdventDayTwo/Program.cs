@@ -22,21 +22,21 @@ foreach (string line in lines)
 Console.WriteLine($"Result 1 : {result}");
 
 // Part 2
+Dictionary<int, Func<int, int>> matchResults = new()
+{
+    { 0, opponentChoice => opponentChoice switch { 1 => 3, 2 => 1, 3 => 2, _ => throw new ArgumentException("Invalid opponent choice") } },
+    { 3, opponentChoice => opponentChoice + 3 },
+    { 6, opponentChoice => opponentChoice % 3 + 1 + 6 }
+};
+
 int newResult = 0;
 foreach (string line in lines)
 {
     string[] parts = line.Split(' ');
-    
+
     int opponentChoice = (int)(OpponentChoice)Enum.Parse(typeof(OpponentChoice), parts[0]);
     int expectedMatchResult = (int)(PartTwoMatchResult)Enum.Parse(typeof(PartTwoMatchResult), parts[1]);
-
-    newResult += expectedMatchResult switch
-    {
-        0 => opponentChoice switch { 1 => 3, 2 => 1, 3 => 2, _ => throw new ArgumentException("Invalid opponent choice") },
-        3 => 3 + opponentChoice,
-        6 => 6 + opponentChoice % 3 + 1,
-        _ => throw new Exception("Invalid match result")
-    };
+    newResult += matchResults[expectedMatchResult](opponentChoice);
 }
 
 Console.WriteLine($"Result 2 : {newResult}");
