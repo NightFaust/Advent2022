@@ -1,6 +1,6 @@
 ﻿using AdventDayTwo;
 
-string data = File.ReadAllText($"{Directory.GetCurrentDirectory()}/data.txt");
+string data = File.ReadAllText($"{Environment.CurrentDirectory}/data.txt");
 string[] lines = data.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
 int result = 0;
 
