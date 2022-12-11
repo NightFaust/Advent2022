@@ -9,13 +9,9 @@
 
   <ItemGroup>
     <None Remove="data.txt" />
-    <None Remove="dataTest.txt" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="dataTest.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
     <EmbeddedResource Include="data.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
