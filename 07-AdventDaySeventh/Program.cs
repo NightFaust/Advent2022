@@ -7,15 +7,20 @@ ParseOutput(root, data);
 
 AllocateDirectoriesSizes(root);
 
-// Print recursively all size of directories of root
 int result = CalculateResult(root);
 
 Console.WriteLine($"Result : {result}");
 
+int newResult = GetSizes(root)
+    .Where(size => size >= root.Size - 40_000_000)
+    .Min();
+
+Console.WriteLine($"Result : {newResult}");
+
 void ParseOutput(DirectoryModel directoryModel, string[] data)
 {
     DirectoryModel currentDirectory = directoryModel;
-    
+
     foreach (string line in data)
     {
         switch (line)
@@ -55,9 +60,7 @@ void AllocateDirectoriesSizes(DirectoryModel directoryModel)
     }
 
     foreach (FileModel file in directoryModel.Files)
-    {
         directoryModel.Size += file.Size;
-    }
 }
 
 int CalculateResult(DirectoryModel directoryModel)
@@ -65,12 +68,22 @@ int CalculateResult(DirectoryModel directoryModel)
     int result = 0;
 
     foreach (DirectoryModel subDirectory in directoryModel.SubDirectories)
-    {
         result += CalculateResult(subDirectory);
-    }
 
     if (directoryModel.Size <= 100000)
         result += directoryModel.Size;
 
     return result;
+}
+
+List<int> GetSizes(DirectoryModel directoryModel)
+{
+    List<int> sizes = new();
+
+    foreach (DirectoryModel subDirectory in directoryModel.SubDirectories)
+        sizes.AddRange(GetSizes(subDirectory));
+
+    sizes.Add(directoryModel.Size);
+
+    return sizes;
 }
