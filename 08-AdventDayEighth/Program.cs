@@ -30,9 +30,42 @@ for (int i = 0; i < data.Length; i++)
 Console.WriteLine($"Result 1 : {result}");
 
 // Part 2
+int newResult = 0;
 for (int i = 0; i < data.Length; i++)
 {
+    for (int j = 0; j < data[i].Length; j++)
+    {
+        int tree = int.Parse(data[i][j].ToString());
 
+        int leftSight = CheckSight(tree, ConvertToIntArray(data[i][0..j]).Reverse().ToArray());
+        int rightSight = CheckSight(tree, ConvertToIntArray(data[i][(j + 1)..]));
+        int bottomSight = CheckSight(tree, ConvertToIntArray(ConvertColumnToRow(data, j, i, false)));
+        int topSight = CheckSight(tree, ConvertToIntArray(ConvertColumnToRow(data, j, i, true)).Reverse().ToArray());
+
+        int total = leftSight * rightSight * bottomSight * topSight;
+
+        if (newResult < total)
+            newResult = total;
+    }
+}
+
+Console.WriteLine($"Result 2 : {newResult}");
+
+int CheckSight(int treeSize, int[] leftTrees)
+{
+    int result = 0;
+    for (int i = 0; i < leftTrees.Length; i++)
+    {
+        if (leftTrees[i] >= treeSize)
+        {
+            result++;
+            return result;
+        }
+
+        result++;
+    }
+
+    return result;
 }
 
 int CheckLeft(int tree, int[] leftTrees)
