@@ -5,6 +5,7 @@ string[] data = File.ReadAllLines($"{Environment.CurrentDirectory}/data.txt");
 int register = 1;
 int cycle = 0;
 int signalStrength = 0;
+string crt = string.Empty;
 
 foreach (string line in data)
 {
@@ -24,6 +25,21 @@ foreach (string line in data)
 }
 
 Console.WriteLine($"Result 1 : {signalStrength}");
+Console.WriteLine("Result 2 : ");
+for (int i = 0; i < 6; i++)
+{
+    Console.WriteLine(crt.Substring(i * 40, 40));
+}
+
+void Draw()
+{
+    int diff = cycle % 40 - register;
+
+    if (diff >= 0 && diff <= 2)
+        crt += "#";
+    else
+        crt += ".";
+}
 
 (Instruction instruction, int value) Parse(string line)
 {
@@ -36,9 +52,11 @@ void Addx(int value)
 {
     cycle += 1;
     CheckSignalStrength();
+    Draw();
     Log();
     cycle += 1;
     CheckSignalStrength();
+    Draw();
     Log();
     register += value;
 }
@@ -47,6 +65,7 @@ void Noop()
 {
     cycle++;
     CheckSignalStrength();
+    Draw();
     Log();
 }
 
